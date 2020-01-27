@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+        <title>SymBNB Administration</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="/css/style.css">
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="col-md-4 offset-md-4 mt-5">
+        <div class="card bg-light mt-5">
+            <div class="card-header">
+                <h4 class="card-title">
+                    <i class="fas fa-lock"></i> Connexion à l'administration
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if hasError %}
+                    <div class="alert alert-warning">
+                        <p>Votre login ou votre mot de passe est incorrect</p>
+                    </div>
+                {% endif %}
+                
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="username">Email</label><input type="text" class="form-control" placeholder="Adresse email..." name="_username" id="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label><input type="password" class="form-control" placeholder="Mot de passe..." name="_password" id="password">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-lock-open"></i> Connexion</button>
+                        <a href="{{path('homepage')}}" class="btn btn-link">
+                            <i class="fas fa-arrow-circle-left"></i> Retour au site
+                        </a>
+                    </div>
+
+
+                
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
