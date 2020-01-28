@@ -47,9 +47,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message="Veuilez mettre une image")
-     * @Assert\Image(mimeTypes={"image/png","image/jpeg","image/gif"}, mimeTypesMessage="Vous devez upload un fichier jpg, png ou gif")
-     * @Assert\File(maxSize="1024k", maxSizeMessage="taille du fichier trop grande")
+     * @Assert\NotBlank(message="Veuilez mettre une image", groups={"front"})
+     * @Assert\Image(mimeTypes={"image/png","image/jpeg","image/gif"}, mimeTypesMessage="Vous devez upload un fichier jpg, png ou gif", groups={"front"})
+     * @Assert\File(maxSize="1024k", maxSizeMessage="taille du fichier trop grande", groups={"front"})
      */
     private $picture;
 
