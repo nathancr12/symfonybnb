@@ -4,10 +4,10 @@
     <div class="container">
         <h1 class="my-5">Modification de l'utilisateur {{user.id}}</h1>
         <a href="{{ path('admin_user_index') }}" class="btn btn-secondary my-3">Retour</a>
-        {% if (user and 'ROLE_ADMIN' in app.user.roles) %}
-            <a href="{{ path('admin_user_index') }}" class="btn btn-danger my-3">Supprimer admin</a>
+        {% if 'ROLE_ADMIN' in user.roles %}
+                <a href="{{ path('admin_users_removeAdmin', {'id': user.id})}}" class="btn btn-danger my-3">Supprimer le role admin</a>
         {% else %}
-            <a href="{{ path('admin_user_index') }}" class="btn btn-success my-3">Ajouter admin</a>
+                <a href="{{ path('admin_users_addAdmin', {'id': user.id})}}" class="btn btn-success my-3">Ajouter le role admin</a>
         {% endif %}
         {{form_start(myForm)}}
             {{form_widget(myForm)}}

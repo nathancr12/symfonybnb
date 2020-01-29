@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AdminUserType;
+use App\Repository\RoleRepository;
 use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,30 +66,74 @@ class AdminUserController extends AbstractController
      * @return Response
      */
     public function delete(User $user, EntityManagerInterface $manager){
-        if(count($user->getRoles()) > 0){
+        if(count($user->getAds()) > 0){
+            $this->addFlash(
+                'warning',
+                "Vous ne pouvez pas supprimer l'utilisateur <strong>{$user->getId()}</strong> car il possède déjà des annonces"
+            );
+        
+        }elseif(count($user->getBookings()) > 0){
             $this->addFlash(
                 'warning',
                 "Vous ne pouvez pas supprimer l'utilisateur <strong>{$user->getId()}</strong> car il possède déjà des réservations"
             );
         }else{
-            $manager->remove($user);
-            $manager->flush();
+            if(!empty($user->getPicture())){
+                unlink($this->getParameter('uploads_directory'.'/'.$user->getPicture()));
+            }
 
+            $manager->remove($user);
             $this->addFlash(
                 'success',
-                "L'annonce <strong>{$user->getId()}</strong> a bien été supprimée"
+                'L\'utilisateur <strong>$user->getFullName</strong> a bien été supprime'
             );
         }
 
         return $this->redirectToRoute('admin_user_index');
     }
 
-    public function addAdmin(){
-
+    /**
+     * @Route("/admin/users/{id}/addAdmin", name="admin_users_addAdmin")
+     *
+     * @param User $user
+     * @param EntityManagerInterface $manager
+     * @param RoleRepository $repo
+     * @return Response
+     */
+    public function addAdmin(User $user, EntityManagerInterface $manager, RoleRepository $role){
+        $user->addUserRole($role->findOneByTitle('ROLE_ADMIN'));
+    
+        $manager->persist($user);
+        $manager->flush();
+    
+        $this->addFlash(
+            'success',
+            "Vous avez nommé un nouvel administrateur"
+        );
+    
+         return $this->redirectToRoute('admin_user_edit', ['id' => $user->getId()]);
     }
 
-    public function removeAdmin(){
-        
+    /**
+     * @Route("/admin/users/{id}/removeAdmin", name="admin_users_removeAdmin")
+     *
+     * @param User $user
+     * @param EntityManagerInterface $manager
+     * @param RoleRepository $repo
+     * @return Response
+     */
+    public function removeAdmin(User $user, EntityManagerInterface $manager, RoleRepository $role){
+        $user->removeUserRole($role->findOneByTitle('ROLE_ADMIN'));
+    
+        $manager->persist($user);
+        $manager->flush();
+    
+        $this->addFlash(
+            'warning',
+            "Vous avez supprimé un administrateur"
+        );
+    
+         return $this->redirectToRoute('admin_user_edit', ['id' => $user->getId()]);
     }
 
 }
