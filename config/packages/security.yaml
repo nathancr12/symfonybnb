@@ -18,7 +18,7 @@ security:
             anonymous: true
             provider: in_database
             form_login: 
-                default_target_path: admin_ads_index
+                default_target_path: admin_dashboard_index
                 login_path: admin_account_login
                 check_path: admin_account_login
             logout:
